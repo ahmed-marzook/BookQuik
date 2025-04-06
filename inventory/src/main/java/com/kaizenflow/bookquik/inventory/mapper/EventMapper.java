@@ -9,9 +9,11 @@ import com.kaizenflow.bookquik.inventory.domain.response.EventInventoryResponse;
 
 @Mapper(
         componentModel = "spring",
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL,
+        uses = {VenueMapper.class})
 public interface EventMapper {
 
     @Mapping(source = "id", target = "eventId")
+    @Mapping(source = "venue", target = "venue")
     EventInventoryResponse entityToResponse(Event event);
 }
