@@ -12,6 +12,7 @@ import com.kaizenflow.bookquik.inventory.domain.response.VenueInventoryResponse;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
 public interface VenueMapper {
 
+    @Mapping(target = "venueId", source = "id")
     @Mapping(target = "venueName", source = "name")
     VenueInventoryResponse entityToResponse(Venue venue);
 }

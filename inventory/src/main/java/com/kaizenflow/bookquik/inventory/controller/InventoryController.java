@@ -12,7 +12,7 @@ import com.kaizenflow.bookquik.inventory.domain.response.VenueInventoryResponse;
 import com.kaizenflow.bookquik.inventory.service.InventoryService;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/inventory")
 public class InventoryController {
 
     private final InventoryService inventoryService;
@@ -21,13 +21,18 @@ public class InventoryController {
         this.inventoryService = inventoryService;
     }
 
-    @GetMapping("/inventory/events")
+    @GetMapping("/events")
     public List<EventInventoryResponse> inventoryGetAllEvents() {
         return inventoryService.getAllEvents();
     }
 
-    @GetMapping("/inventory/venue/{venueId}")
+    @GetMapping("/venue/{venueId}")
     public VenueInventoryResponse inventoryByVenueId(@PathVariable("venueId") Long venueId) {
         return inventoryService.getVenueByInformation(venueId);
+    }
+
+    @GetMapping("/event/{eventId}")
+    public EventInventoryResponse inventoryByEventId(@PathVariable("eventId") Long eventId) {
+        return inventoryService.getEventInventory(eventId);
     }
 }

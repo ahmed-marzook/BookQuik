@@ -22,6 +22,7 @@ public class BookingService {
 
     public BookingResponse createBooking(final BookingRequest bookingRequest) {
         final Customer customer = customerRepository.findById(bookingRequest.getUserId()).orElseThrow(RuntimeException::new);
+
         return BookingResponse.builder().build();
     }
 }

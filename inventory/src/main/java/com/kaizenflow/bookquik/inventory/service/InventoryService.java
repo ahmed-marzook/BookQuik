@@ -43,4 +43,9 @@ public class InventoryService {
 
         return venueMapper.entityToResponse(venue);
     }
+
+    public EventInventoryResponse getEventInventory(Long eventId) {
+        return eventMapper.entityToResponse(
+                eventRepository.findById(eventId).orElseThrow(RuntimeException::new));
+    }
 }
