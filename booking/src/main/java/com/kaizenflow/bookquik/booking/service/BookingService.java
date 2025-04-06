@@ -30,6 +30,9 @@ public class BookingService {
                 customerRepository.findById(bookingRequest.getUserId()).orElseThrow(RuntimeException::new);
         final InventoryResponse inventoryResponse =
                 inventoryServiceClient.getInventory(bookingRequest.getEventId());
+        if (inventoryResponse.totalCapacity() < bookingRequest.getTicketCount()) {
+            throw new RuntimeException("Ticket count exceeded");
+        }
         return new BookingResponse(null, null, null, null, null);
     }
 }
