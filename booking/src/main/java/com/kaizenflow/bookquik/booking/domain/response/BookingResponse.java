@@ -1,6 +1,4 @@
 package com.kaizenflow.bookquik.booking.domain.response;
 
-import lombok.Builder;
-
-@Builder
-public class BookingResponse {}
+public record BookingResponse(
+        Long bookingId, Long userId, Long eventId, Long ticketCount, String ticketPrice) {}

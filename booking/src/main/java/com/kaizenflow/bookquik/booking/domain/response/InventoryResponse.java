@@ -1,11 +1,11 @@
-package com.kaizenflow.bookquik.inventory.domain.response;
+package com.kaizenflow.bookquik.booking.domain.response;
 
 import java.math.BigDecimal;
 
-public record EventInventoryResponse(
+public record InventoryResponse(
         Long eventId,
         String name,
         Long totalCapacity,
         Long leftCapacity,
-        VenueInventoryResponse venue,
+        VenueResponse venue,
         BigDecimal ticketPrice) {}

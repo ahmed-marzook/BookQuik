@@ -1,5 +1,7 @@
 package com.kaizenflow.bookquik.inventory.domain.entity;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +26,9 @@ public class Event {
 
     @Column(name = "left_capacity", nullable = false)
     private Long leftCapacity;
+
+    @Column(name = "ticket_price", nullable = false)
+    private BigDecimal ticketPrice;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "venue_id", nullable = false)

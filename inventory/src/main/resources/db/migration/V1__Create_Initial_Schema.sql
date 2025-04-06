@@ -17,6 +17,7 @@ CREATE TABLE
         total_capacity BIGINT NOT NULL,
         left_capacity BIGINT NOT NULL,
         venue_id BIGINT NOT NULL,
+        ticket_price DECIMAL NOT NULL,
         FOREIGN KEY (venue_id) REFERENCES venue (id)
     );
 
