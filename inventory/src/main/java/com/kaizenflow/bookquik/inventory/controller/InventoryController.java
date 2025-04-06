@@ -3,10 +3,12 @@ package com.kaizenflow.bookquik.inventory.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kaizenflow.bookquik.inventory.domain.response.EventInventoryResponse;
+import com.kaizenflow.bookquik.inventory.domain.response.VenueInventoryResponse;
 import com.kaizenflow.bookquik.inventory.service.InventoryService;
 
 @RestController
@@ -22,5 +24,10 @@ public class InventoryController {
     @GetMapping("/inventory/events")
     public List<EventInventoryResponse> inventoryGetAllEvents() {
         return inventoryService.getAllEvents();
+    }
+
+    @GetMapping("/inventory/venue/{venueId}")
+    public VenueInventoryResponse inventoryByVenueId(@PathVariable("venueId") Long venueId) {
+        return inventoryService.getVenueByInformation(venueId);
     }
 }

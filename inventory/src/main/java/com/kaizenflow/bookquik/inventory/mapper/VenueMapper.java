@@ -3,13 +3,13 @@ package com.kaizenflow.bookquik.inventory.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
-import com.kaizenflow.bookquik.inventory.domain.entity.Event;
-import com.kaizenflow.bookquik.inventory.domain.response.EventInventoryResponse;
+import com.kaizenflow.bookquik.inventory.domain.entity.Venue;
+import com.kaizenflow.bookquik.inventory.domain.response.VenueInventoryResponse;
 
 @Mapper(
         componentModel = "spring",
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
-public interface EventMapper {
+public interface VenueMapper {
 
-    EventInventoryResponse entityToResponse(Event event);
+    VenueInventoryResponse entityToResponse(Venue venue);
 }
