@@ -1,4 +1,6 @@
 package com.kaizenflow.bookquik.booking.domain.response;
 
-public class BookingResponse {
-}
+import lombok.Builder;
+
+@Builder
+public class BookingResponse {}
