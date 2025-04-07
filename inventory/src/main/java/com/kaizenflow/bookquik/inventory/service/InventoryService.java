@@ -3,6 +3,8 @@ package com.kaizenflow.bookquik.inventory.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.kaizenflow.bookquik.inventory.domain.entity.Event;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import com.kaizenflow.bookquik.inventory.domain.entity.Venue;
@@ -14,6 +16,7 @@ import com.kaizenflow.bookquik.inventory.repositories.EventRepository;
 import com.kaizenflow.bookquik.inventory.repositories.VenueRepository;
 
 @Service
+@Slf4j
 public class InventoryService {
 
     private final EventRepository eventRepository;
@@ -47,5 +50,12 @@ public class InventoryService {
     public EventInventoryResponse getEventInventory(Long eventId) {
         return eventMapper.entityToResponse(
                 eventRepository.findById(eventId).orElseThrow(RuntimeException::new));
+    }
+
+    public void updateEventCapacity(Long eventId, Long ticketsBooked) {
+        final Event event = eventRepository.findById(eventId).orElseThrow(RuntimeException::new);
+        event.setLeftCapacity(event.getLeftCapacity() - ticketsBooked);
+        eventRepository.save(event);
+        log.info("Updated event capacity for event id: {} with tickets booked: {}", eventId, ticketsBooked);
     }
 }

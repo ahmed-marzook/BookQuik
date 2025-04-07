@@ -2,8 +2,10 @@ package com.kaizenflow.bookquik.inventory.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,4 +37,12 @@ public class InventoryController {
     public EventInventoryResponse inventoryByEventId(@PathVariable("eventId") Long eventId) {
         return inventoryService.getEventInventory(eventId);
     }
+
+    @PutMapping("/event/{eventId}/capacity/{capacity}")
+    public ResponseEntity<Void> updateEventCapacity(@PathVariable("eventId") Long eventId, @PathVariable("capacity") Long ticketsBooked) {
+        inventoryService.updateEventCapacity(eventId, ticketsBooked);
+        return ResponseEntity.ok().build();
+
+    }
+
 }
