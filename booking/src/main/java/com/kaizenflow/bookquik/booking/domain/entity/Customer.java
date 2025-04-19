@@ -34,7 +34,4 @@ public class Customer {
 
     @Column(nullable = false)
     private String address;
-
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Order> orders = new ArrayList<>();
 }

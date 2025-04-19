@@ -12,7 +12,6 @@ import com.kaizenflow.bookquik.booking.domain.request.BookingRequest;
 import com.kaizenflow.bookquik.booking.domain.response.BookingResponse;
 import com.kaizenflow.bookquik.booking.domain.response.InventoryResponse;
 import com.kaizenflow.bookquik.booking.repository.CustomerRepository;
-import com.kaizenflow.bookquik.booking.repository.OrderRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,17 +19,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BookingService {
     private final CustomerRepository customerRepository;
-    private final OrderRepository orderRepository;
     private final InventoryServiceClient inventoryServiceClient;
     private final KafkaTemplate<String, BookingEvent> kafkaTemplate;
 
     public BookingService(
             CustomerRepository customerRepository,
-            OrderRepository orderRepository,
             InventoryServiceClient inventoryServiceClient,
             KafkaTemplate<String, BookingEvent> kafkaTemplate) {
         this.customerRepository = customerRepository;
-        this.orderRepository = orderRepository;
         this.inventoryServiceClient = inventoryServiceClient;
         this.kafkaTemplate = kafkaTemplate;
     }
