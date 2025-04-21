@@ -38,8 +38,10 @@ public class OrderService {
 
             // Update inventory
             inventoryServiceClient.updateInventory(order.getEventId(), order.getTicketCount());
-            log.info("Inventory updated for event ID: {} with ticket count: {}",
-                    order.getEventId(), order.getTicketCount());
+            log.info(
+                    "Inventory updated for event ID: {} with ticket count: {}",
+                    order.getEventId(),
+                    order.getTicketCount());
 
             // Acknowledge the message after successful processing
             acknowledgment.acknowledge();

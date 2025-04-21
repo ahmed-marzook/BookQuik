@@ -42,29 +42,26 @@ BookQuik is composed of several independent microservices that communicate via K
 
 1. Clone the repository
 
-   ```
+   ```bash
    git clone https://github.com/yourorganization/bookquik.git
    cd bookquik
    ```
 
-2. Start infrastructure services
+2. Build the service images:
 
+   ```bash
+   python build_docker_images.py
    ```
+
+3. Start the containers
+
+   ```bash
    docker-compose up -d
    ```
 
-3. Build all services
-
-   ```
-   mvn clean package
-   ```
-
-4. Run the services
-   ```
-   java -jar booking-service/target/booking-service.jar
-   java -jar inventory-service/target/inventory-service.jar
-   java -jar order-service/target/order-service.jar
-   # ... repeat for other services
+4. Check the status:
+   ```bash
+   docker-compose ps
    ```
 
 ## Service Details

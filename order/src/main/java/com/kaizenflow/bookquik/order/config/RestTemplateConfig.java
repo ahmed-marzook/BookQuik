@@ -12,7 +12,9 @@ public class RestTemplateConfig {
 
     @Bean
     public RestTemplateBuilder restTemplateBuilder() {
-        return new RestTemplateBuilder().connectTimeout(Duration.ofSeconds(5)).readTimeout(Duration.ofSeconds(5));
+        return new RestTemplateBuilder()
+                .connectTimeout(Duration.ofSeconds(5))
+                .readTimeout(Duration.ofSeconds(5));
     }
 
     @Bean

@@ -15,13 +15,14 @@ import lombok.extern.slf4j.Slf4j;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(InventoryServiceException.class)
-    public ResponseEntity<ErrorResponse> handleInventoryServiceException(InventoryServiceException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.SERVICE_UNAVAILABLE.value(),
-                "Inventory Service Error",
-                ex.getMessage(),
-                LocalDateTime.now()
-        );
+    public ResponseEntity<ErrorResponse> handleInventoryServiceException(
+            InventoryServiceException ex) {
+        ErrorResponse errorResponse =
+                new ErrorResponse(
+                        HttpStatus.SERVICE_UNAVAILABLE.value(),
+                        "Inventory Service Error",
+                        ex.getMessage(),
+                        LocalDateTime.now());
 
         log.error("Inventory service error: {}", ex.getMessage(), ex);
         return new ResponseEntity<>(errorResponse, HttpStatus.SERVICE_UNAVAILABLE);
@@ -29,12 +30,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "Internal Server Error",
-                ex.getMessage(),
-                LocalDateTime.now()
-        );
+        ErrorResponse errorResponse =
+                new ErrorResponse(
+                        HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                        "Internal Server Error",
+                        ex.getMessage(),
+                        LocalDateTime.now());
 
         log.error("Unexpected error: {}", ex.getMessage(), ex);
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);

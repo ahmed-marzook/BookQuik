@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   # MySQL databases for each service
   mysql:
@@ -96,6 +94,62 @@ services:
         condition: service_healthy
     networks:
       - bookquik-network
+
+  # Inventory Service
+  inventory-service:
+    image: bookquik/inventory:latest
+    container_name: bookquik-inventory
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "http://localhost:8081/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+  # Booking Service
+  booking-service:
+    image: bookquik/booking:latest
+    container_name: bookquik-booking
+    depends_on:
+      mysql:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
+      inventory-service:
+        condition: service_healthy
+    ports:
+      - "8082:8082"
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "http://localhost:8082/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+  # Order Service
+  order-service:
+    image: bookquik/order:latest
+    container_name: bookquik-order
+    depends_on:
+      mysql:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
+      inventory-service:
+        condition: service_healthy
+    ports:
+      - "8083:8083"
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "http://localhost:8083/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
 
 networks:
   bookquik-network:

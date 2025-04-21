@@ -15,11 +15,11 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ContainerProperties.AckMode;
 import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
+import org.springframework.util.backoff.FixedBackOff;
 
 import com.kaizenflow.bookquik.order.domain.event.BookingEvent;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.backoff.FixedBackOff;
 
 @Configuration
 @EnableKafka
@@ -48,14 +48,12 @@ public class KafkaConfig {
         deserializer.addTrustedPackages("com.kaizenflow.bookquik.*");
         deserializer.setUseTypeMapperForKey(true);
 
-        return new DefaultKafkaConsumerFactory<>(
-                props,
-                new StringDeserializer(),
-                deserializer);
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), deserializer);
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, BookingEvent> kafkaListenerContainerFactory() {
+    public ConcurrentKafkaListenerContainerFactory<String, BookingEvent>
+            kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, BookingEvent> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
@@ -63,14 +61,10 @@ public class KafkaConfig {
         // Configure manual acknowledgment
         factory.getContainerProperties().setAckMode(AckMode.MANUAL_IMMEDIATE);
 
-        DefaultErrorHandler errorHandler = new DefaultErrorHandler(
-                new FixedBackOff(2000L, 3L)
-        );
+        DefaultErrorHandler errorHandler = new DefaultErrorHandler(new FixedBackOff(2000L, 3L));
 
         // Add specific exceptions that should not be retried
-        errorHandler.addNotRetryableExceptions(
-                IllegalArgumentException.class
-        );
+        errorHandler.addNotRetryableExceptions(IllegalArgumentException.class);
 
         factory.setCommonErrorHandler(errorHandler);
 
