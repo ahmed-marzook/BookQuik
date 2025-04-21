@@ -1,0 +1,53 @@
+package com.kaizenflow.bookquik.apigateway.route;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions;
+import org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.function.RequestPredicates;
+import org.springframework.web.servlet.function.RouterFunction;
+import org.springframework.web.servlet.function.ServerRequest;
+import org.springframework.web.servlet.function.ServerResponse;
+
+@Configuration
+public class BookingServiceRoutes {
+
+    @Value("${service.booking.url}")
+    private String bookingServiceUrl;
+
+    @Bean
+    public RouterFunction<ServerResponse> bookingRoutes() {
+        return GatewayRouterFunctions.route("booking-service")
+                // Booking endpoint
+                .route(
+                        RequestPredicates.POST("/api/v1/booking"),
+                        HandlerFunctions.http(bookingServiceUrl + "/api/v1/book"))
+
+                // Customer endpoints
+                .route(
+                        RequestPredicates.GET("/api/v1/customers"),
+                        HandlerFunctions.http(bookingServiceUrl + "/api/v1/customers"))
+                .route(
+                        RequestPredicates.POST("/api/v1/customers"),
+                        HandlerFunctions.http(bookingServiceUrl + "/api/v1/customers"))
+                .route(
+                        RequestPredicates.GET("/api/v1/customers/{id}"),
+                        request -> forwardWithPathVariable(request, "id", bookingServiceUrl + "/api/v1/customers/"))
+                .route(
+                        RequestPredicates.PUT("/api/v1/customers/{id}"),
+                        request -> forwardWithPathVariable(request, "id", bookingServiceUrl + "/api/v1/customers/"))
+                .route(
+                        RequestPredicates.DELETE("/api/v1/customers/{id}"),
+                        request -> forwardWithPathVariable(request, "id", bookingServiceUrl + "/api/v1/customers/"))
+                .route(
+                        RequestPredicates.GET("/api/v1/customers/email"),
+                        HandlerFunctions.http(bookingServiceUrl + "/api/v1/customers/email"))
+                .build();
+    }
+
+    private static ServerResponse forwardWithPathVariable(ServerRequest request, String pathVariable, String baseUrl) throws Exception {
+        String value = request.pathVariable(pathVariable);
+        return HandlerFunctions.http(baseUrl + value).handle(request);
+    }
+}
