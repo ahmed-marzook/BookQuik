@@ -54,6 +54,12 @@ services:
       CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
       # Unique base64 UUID for the Kafka cluster
       CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
+    healthcheck:
+      test: [ "CMD", "kafka-topics", "--bootstrap-server", "localhost:9092", "--list" ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+      start_period: 15s
     networks:
       - bookquik-network
 
@@ -110,6 +116,8 @@ services:
       timeout: 5s
       retries: 5
       start_period: 40s
+    networks:
+      - bookquik-network
 
   # Booking Service
   booking-service:
@@ -130,6 +138,8 @@ services:
       timeout: 5s
       retries: 5
       start_period: 40s
+    networks:
+      - bookquik-network
 
   # Order Service
   order-service:
@@ -150,6 +160,8 @@ services:
       timeout: 5s
       retries: 5
       start_period: 40s
+    networks:
+      - bookquik-network
 
 networks:
   bookquik-network:
