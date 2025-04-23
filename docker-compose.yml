@@ -12,7 +12,7 @@ services:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
-      - ./init-scripts:/docker-entrypoint-initdb.d
+      - ./init-scripts/database:/docker-entrypoint-initdb.d
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       interval: 10s
@@ -82,6 +82,7 @@ services:
     image: quay.io/keycloak/keycloak:21.0
     container_name: bookquik-keycloak
     environment:
+      KEYCLOAK_IMPORT: /opt/keycloak/data/import/realm-export.json
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
       KC_DB: mysql
@@ -93,8 +94,11 @@ services:
       - --db-url=jdbc:mysql://mysql:3306/keycloak
       - --db-username=root
       - --db-password=rootpassword
+      - --import-realm
     ports:
       - "8180:8080"
+    volumes:
+      - ./init-scripts/keycloak:/opt/keycloak/data/import
     depends_on:
       mysql:
         condition: service_healthy
@@ -156,6 +160,31 @@ services:
       - "8083:8083"
     healthcheck:
       test: [ "CMD", "curl", "--fail", "http://localhost:8083/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    networks:
+      - bookquik-network
+
+  apigateway-service:
+    image: bookquik/apigateway:latest
+    container_name: bookquik-apigateway
+    depends_on:
+      mysql:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
+      inventory-service:
+        condition: service_healthy
+      order-service:
+        condition: service_healthy
+      booking-service:
+        condition: service_healthy
+    ports:
+      - "8090:8090"
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "http://localhost:8090/actuator/health" ]
       interval: 10s
       timeout: 5s
       retries: 5

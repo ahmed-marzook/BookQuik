@@ -18,8 +18,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .authorizeHttpRequests(
-                        authorizeRequests -> authorizeRequests.anyRequest().authenticated())
+                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers("/actuator/**")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated())
                 .oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults()))
                 .build();
     }
