@@ -28,12 +28,15 @@ public class InventoryServiceRoutes {
                         HandlerFunctions.http(inventoryServiceUrl + "/api/v1/inventory/events"))
                 .route(
                         RequestPredicates.GET("/api/v1/inventory/event/{eventId}"),
-                        request -> forwardWithPathVariable(request, "eventId", inventoryServiceUrl + "/api/v1/inventory/event/"))
+                        request -> forwardWithPathVariable(
+                                request, "eventId", inventoryServiceUrl + "/api/v1/inventory/event/"))
                 .route(
                         RequestPredicates.PUT("/api/v1/inventory/event/{eventId}/capacity/{capacity}"),
-                        request -> forwardWithMultiplePathVariables(request,
-                                new String[]{"eventId", "capacity"},
-                                inventoryServiceUrl + "/api/v1/inventory/event/", "/capacity/"))
+                        request -> forwardWithMultiplePathVariables(
+                                request,
+                                new String[] {"eventId", "capacity"},
+                                inventoryServiceUrl + "/api/v1/inventory/event/",
+                                "/capacity/"))
 
                 // Venue endpoints
                 .route(
@@ -44,21 +47,22 @@ public class InventoryServiceRoutes {
                         HandlerFunctions.http(inventoryServiceUrl + "/api/v1/inventory/venues"))
                 .route(
                         RequestPredicates.GET("/api/v1/inventory/venue/{venueId}"),
-                        request -> forwardWithPathVariable(request, "venueId", inventoryServiceUrl + "/api/v1/inventory/venue/"))
+                        request -> forwardWithPathVariable(
+                                request, "venueId", inventoryServiceUrl + "/api/v1/inventory/venue/"))
                 .build();
     }
 
-    private static ServerResponse forwardWithPathVariable(ServerRequest request, String pathVariable, String baseUrl) throws Exception {
+    private static ServerResponse forwardWithPathVariable(ServerRequest request, String pathVariable, String baseUrl)
+            throws Exception {
         String value = request.pathVariable(pathVariable);
         return HandlerFunctions.http(baseUrl + value).handle(request);
     }
 
-    private static ServerResponse forwardWithMultiplePathVariables(ServerRequest request,
-                                                                   String[] pathVariables,
-                                                                   String baseUrl,
-                                                                   String middleUrl) throws Exception {
+    private static ServerResponse forwardWithMultiplePathVariables(
+            ServerRequest request, String[] pathVariables, String baseUrl, String middleUrl) throws Exception {
         String firstValue = request.pathVariable(pathVariables[0]);
         String secondValue = request.pathVariable(pathVariables[1]);
-        return HandlerFunctions.http(baseUrl + firstValue + middleUrl + secondValue).handle(request);
+        return HandlerFunctions.http(baseUrl + firstValue + middleUrl + secondValue)
+                .handle(request);
     }
 }

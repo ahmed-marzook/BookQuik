@@ -21,7 +21,7 @@ public class BookingServiceRoutes {
         return GatewayRouterFunctions.route("booking-service")
                 // Booking endpoint
                 .route(
-                        RequestPredicates.POST("/api/v1/booking"),
+                        RequestPredicates.POST("/api/v1/book"),
                         HandlerFunctions.http(bookingServiceUrl + "/api/v1/book"))
 
                 // Customer endpoints
@@ -46,7 +46,8 @@ public class BookingServiceRoutes {
                 .build();
     }
 
-    private static ServerResponse forwardWithPathVariable(ServerRequest request, String pathVariable, String baseUrl) throws Exception {
+    private static ServerResponse forwardWithPathVariable(ServerRequest request, String pathVariable, String baseUrl)
+            throws Exception {
         String value = request.pathVariable(pathVariable);
         return HandlerFunctions.http(baseUrl + value).handle(request);
     }
