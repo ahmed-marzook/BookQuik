@@ -119,23 +119,12 @@ BookQuik is composed of several independent microservices that communicate via K
 - `notifications`: Notification-related events
 - `payments`: Payment-related events
 
-## Configuration
+## Exporting Keycloak
 
-Each service includes its own `application.yml` with service-specific configurations. Common configurations are stored in a central config server.
+Run command inside keycloak container after configuration
 
-```yaml
-spring:
-  application:
-    name: booking-service
-  datasource:
-    url: jdbc:mysql://localhost:3306/booking_db
-    username: bookquik_user
-    password: ${MYSQL_PASSWORD}
-  kafka:
-    bootstrap-servers: localhost:9092
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+```bash
+/opt/keycloak/bin/kc.sh export --file <file>
 ```
 
 ## Deployment
