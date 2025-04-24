@@ -64,6 +64,42 @@ BookQuik is composed of several independent microservices that communicate via K
    docker-compose ps
    ```
 
+## Documentation Access
+
+To access the Swagger UI documentation, navigate to:
+
+```
+http://localhost:8090/swagger-ui/index.html
+```
+
+## Keycloak Authentication
+
+### Token Generation
+
+To generate an authentication token for API testing:
+
+- **Grant Type**: Client Credentials
+- **Client Authentication**: Send as Basic Auth Header
+- **Access Token URL**: http://localhost:8180/realms/bookquik/protocol/openid-connect/token
+- **Client ID**: bookquick-client
+- **Secret**: dGhjzX3npY40Dh8BWwLpM2PMxmIa8qxi
+
+### Using with Postman
+
+1. In Postman, go to the Authorization tab
+2. Select OAuth 2.0 as the auth type
+3. Configure the token request with the above credentials
+4. Click "Get New Access Token" and then "Use Token"
+
+### Using with cURL
+
+```bash
+curl -X POST \
+  http://localhost:8180/realms/bookquik/protocol/openid-connect/token \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  -d 'grant_type=client_credentials&client_id=bookquick-client&client_secret=dGhjzX3npY40Dh8BWwLpM2PMxmIa8qxi'
+```
+
 ## Service Details
 
 ### API Gateway
