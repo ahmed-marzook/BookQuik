@@ -1,5 +1,7 @@
 package com.kaizenflow.bookquik.apigateway.route;
 
+import static org.springframework.cloud.gateway.server.mvc.filter.FilterFunctions.setPath;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions;
 import org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions;
@@ -49,6 +51,17 @@ public class InventoryServiceRoutes {
                         RequestPredicates.GET("/api/v1/inventory/venue/{venueId}"),
                         request -> forwardWithPathVariable(
                                 request, "venueId", inventoryServiceUrl + "/api/v1/inventory/venue/"))
+                .build();
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> inventoryServiceApiDocsRoutes() {
+        return GatewayRouterFunctions.route("inventory-service-api-docs")
+                // Booking endpoint
+                .route(
+                        RequestPredicates.path("/docs/inventoryservice/v3/api-docs"),
+                        HandlerFunctions.http(inventoryServiceUrl))
+                .filter(setPath("/v3/api-docs"))
                 .build();
     }
 
