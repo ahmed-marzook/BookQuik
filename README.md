@@ -2,6 +2,8 @@
 
 BookQuik is a robust and scalable booking service application built on a microservice architecture, designed to handle high-volume reservation operations with reliability and performance.
 
+![BookQuik Diagram](bookquik-diagram.png)
+
 ## Architecture Overview
 
 BookQuik is composed of several independent microservices that communicate via Kafka event streams:
@@ -9,14 +11,7 @@ BookQuik is composed of several independent microservices that communicate via K
 - **API Gateway**: Entry point for all client requests, handling routing, authentication, and load balancing
 - **Booking Service**: Core service handling the creation, modification, and cancellation of bookings
 - **Order Service**: Processes customer orders, manages order lifecycle and history
-- **Inventory Service**: Manages available resources (rooms, equipment, vehicles, etc.)
-
-## Future Services
-
-- **User Service**: Handles user accounts, authentication, and profiles
-- **Notification Service**: Manages communications via email, SMS, and push notifications
-- **Payment Service**: Processes payments and refunds
-- **Analytics Service**: Collects and processes booking data for business intelligence
+- **Inventory Service**: Manages available resources (venue, events)
 
 ## Tech Stack
 
@@ -24,7 +19,6 @@ BookQuik is composed of several independent microservices that communicate via K
 - **Database**: MySQL (per service)
 - **Message Broker**: Apache Kafka
 - **API Gateway**: Spring Cloud Gateway
-- **Service Discovery**: Eureka
 - **Configuration**: Spring Cloud Config
 - **Circuit Breaker**: Resilience4j
 
@@ -122,12 +116,6 @@ curl -X POST \
 - Publishes events: `inventory-updated`, `inventory-reserved`
 - Subscribes to: `booking-created`, `booking-cancelled`, `order-created`
 
-### User Service
-
-- Manages user accounts and authentication
-- Provides JWT token-based authentication
-- Publishes events: `user-registered`, `user-updated`
-
 ### Order Service
 
 - Handles customer order processing
@@ -135,25 +123,9 @@ curl -X POST \
 - Publishes events: `order-created`, `order-updated`, `order-fulfilled`, `order-cancelled`
 - Subscribes to: `inventory-updated`, `payment-processed`
 
-### Notification Service
-
-- Handles all user communications
-- Subscribes to: `booking-created`, `booking-updated`, `booking-cancelled`, `payment-processed`, `order-created`, `order-updated`
-
-### Payment Service
-
-- Processes financial transactions
-- Publishes events: `payment-processed`, `payment-failed`, `refund-processed`
-- Subscribes to: `booking-created`, `booking-cancelled`, `order-created`, `order-cancelled`
-
 ## Kafka Topics
 
-- `bookings`: Booking-related events
-- `inventory`: Inventory-related events
-- `users`: User-related events
 - `orders`: Order-related events
-- `notifications`: Notification-related events
-- `payments`: Payment-related events
 
 ## Exporting Keycloak
 
